@@ -37,5 +37,20 @@ public class SchoolMaintenanceService {
         return modelMapper.map(school, SchoolResponse.class);
     }
 
+    public SchoolResponse delete(Long id, Boolean status) {
+        Optional<School> findSchoolOptional = schoolRepository.findById(id);
+
+        if (findSchoolOptional.isPresent()) {
+            School foundSchool = findSchoolOptional.get();
+            if (!foundSchool.getStatus().equals(status)) {
+                foundSchool.setStatus(status);
+                schoolRepository.save(foundSchool);
+            }
+            return modelMapper.map(foundSchool, SchoolResponse.class);
+        } else {
+            throw new RuntimeException("School with ID " + id + " not found");
+        }
+    }
+
 
 }
