@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ShoolQueryService {
+public class SchoolQueryService {
     @Autowired
     private SchoolRepository schoolRepository;
 
@@ -21,13 +21,13 @@ public class ShoolQueryService {
 
     public List<SchoolResponse> findAll(){
         List<School> allSchool= schoolRepository.findAll()
-                .stream().filter(s->s.getStatus())
+                .stream().filter(s->s.getStatus().equals(true))
                 .toList();
         Type typeList=new TypeToken<List<SchoolResponse>>(){}.getType();
         return modelMapper.map(allSchool, typeList);
     }
 
-    public SchoolResponse findById(Long id){
+    public SchoolResponse findSchoolById(Long id){
         Optional<School> schoolId= Optional.ofNullable(schoolRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("id not found")));
         SchoolResponse map = modelMapper.map(schoolId.get(), SchoolResponse.class);
